@@ -1,0 +1,27 @@
+---
+version: "3.8"
+
+volumes:
+  data:
+
+services:
+  weewx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hassio-weewx:4.10.2
+    init: true
+    restart: "no"
+    # devices:
+    #   - "/dev/ttyUSB0:/dev/ttyUSB0"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+    privileged: true
+    ports:
+      - 8081:80
+    environment:
+      - TIMEZONE=Europe/Paris
+      - WEEWX_UID=weewx
+      - WEEWX_GID=dialout
